@@ -17,11 +17,11 @@ static void signal_handler(int signal, siginfo_t*, void*) {
         return;
 
     //call back to java with a message
-    __android_log_print(ANDROID_LOG_ERROR, "Native", "Calling with signal %d", signal);
+    __android_log_print(ANDROID_LOG_ERROR, "native-lib.signal_handler", "Calling with signal %d", signal);
     std::string message = "Got signal " + std::to_string(signal);
     jstring msg = env->NewStringUTF(message.c_str());
     env->CallVoidMethod(activity, callback, msg);
-    __android_log_print(ANDROID_LOG_ERROR, "Native", "Called with signal %d", signal);
+    __android_log_print(ANDROID_LOG_ERROR, "native-lib.signal_handler", "Called with signal %d", signal);
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -44,7 +44,7 @@ Java_com_kevinkreiser_crashtest_CrashActivity_handleSegv(JNIEnv* env, jobject ob
         return false;
 
     //try calling back to java with a message
-    jstring message = env->NewStringUTF("No signal");
+    jstring message = env->NewStringUTF("No signal yet");
     env->CallVoidMethod(activity, callback, message);
 
     //register for SIGSEGV

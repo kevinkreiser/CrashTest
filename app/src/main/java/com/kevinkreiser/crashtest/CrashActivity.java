@@ -39,6 +39,6 @@ public class CrashActivity extends AppCompatActivity {
      * @param message  The message coming back from c++
      */
     public void callback(String message) {
-        Log.e("CrashActivity", message);
+        Log.e("CrashActivity.callback", message);
     }
 }
