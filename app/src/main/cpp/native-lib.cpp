@@ -11,8 +11,6 @@ static jmethodID callback = NULL;
 
 //gets called first when a signal is sent to the running pid
 static void signal_handler(int signal, siginfo_t*, void*) {
-    __android_log_print(ANDROID_LOG_ERROR, "Native", "Saw signal %d", signal);
-
     //get an env so we can call back to java
     JNIEnv* env;
     if(vm->AttachCurrentThread(&env, NULL) != JNI_OK)
@@ -23,6 +21,7 @@ static void signal_handler(int signal, siginfo_t*, void*) {
     std::string message = "Got signal " + std::to_string(signal);
     jstring msg = env->NewStringUTF(message.c_str());
     env->CallVoidMethod(activity, callback, msg);
+    __android_log_print(ANDROID_LOG_ERROR, "Native", "Called with signal %d", signal);
 }
 
 extern "C" JNIEXPORT void JNICALL
